@@ -6,66 +6,91 @@
     <title>Fragment — Username</title>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
     <style>
+        /* تعريف متغيرات الألوان لمطابقة الواجهة الرسمية */
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --blue-btn: #0088cc;
-            --text-gray: #94a3b8;
-            --status-green: #10b981;
+            --bg-color: #0f172a;          /* لون الخلفية الداكن */
+            --card-bg: #1e293b;           /* لون البطاقات */
+            --blue-accent: #60a5fa;       /* لون الأزرق الروابط واليوزر */
+            --text-gray-1: #94a3b8;        /* رمادي فاتح للنصوص الفرعية */
+            --text-gray-2: #64748b;        /* رمادي داكن للعناوين */
+            --status-green: #10b981;      /* لون حالة Claimed/Sold */
         }
+        
         body {
             background-color: var(--bg-color);
             color: white;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0; padding: 20px; display: flex; justify-content: center;
+            margin: 0; padding: 16px; display: flex; justify-content: center;
         }
-        .container { width: 100%; max-width: 450px; }
-        .header { display: flex; align-items: center; margin-bottom: 30px; }
-        .logo { font-weight: bold; font-size: 20px; letter-spacing: 1px; display: flex; align-items: center; }
-        .logo svg { margin-right: 10px; fill: white; }
         
-        .main-title { text-align: center; font-size: 28px; font-weight: bold; margin-bottom: 5px; }
+        .container { width: 100%; max-width: 420px; }
+        
+        /* الهيدر مع شعار Fragment */
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; padding: 4px 0; }
+        .logo { font-weight: bold; font-size: 20px; letter-spacing: 0.5px; display: flex; align-items: center; color: white; text-decoration: none; }
+        .logo svg { margin-right: 12px; fill: white; width: 22px; height: 22px; }
+        .menu-icon { fill: white; width: 24px; height: 24px; }
+
+        /* العنوان الرئيسي للحساب */
+        .title-section { text-align: center; font-size: 28px; font-weight: bold; margin-bottom: 30px; }
+        .title-section .t-me { color: var(--text-gray-1); }
         .status-badge { 
-            background: rgba(16, 185, 129, 0.2); 
+            background: rgba(16, 185, 129, 0.15); 
             color: var(--status-green); 
-            padding: 2px 8px; border-radius: 4px; font-size: 14px; 
-            display: inline-block; margin-left: 10px; vertical-align: middle;
+            padding: 3px 10px; border-radius: 4px; font-size: 13px; font-weight: 500;
+            display: inline-block; vertical-align: middle; margin-left: 8px;
         }
 
+        /* بوكس العروض "What is this?" */
         .offer-box {
-            background: #1e293b; border-radius: 12px; padding: 20px; margin-top: 25px;
-            border: 1px solid #334155;
+            background: var(--card-bg); border-radius: 12px; padding: 20px; margin-top: 25px;
+            border: 1px solid #2d3e51;
         }
-        .offer-title { color: var(--text-gray); font-size: 14px; margin-bottom: 15px; }
-        .offer-desc { font-size: 15px; line-height: 1.5; margin-bottom: 15px; }
-        .offer-desc span { color: var(--blue-btn); font-weight: bold; }
+        .offer-title { color: var(--text-gray-1); font-size: 14px; font-weight: 500; margin-bottom: 12px; }
+        .offer-desc { font-size: 14px; line-height: 1.6; color: rgba(255,255,255,0.9); }
+        .offer-desc span { color: var(--blue-accent); font-weight: bold; }
 
-        .info-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #334155; font-size: 15px; }
-        .info-label { color: var(--text-gray); }
-        .info-value { color: #60a5fa; cursor: pointer; }
+        /* صفوف المعلومات الفرعية */
+        .info-row { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid #2d3e51; font-size: 14px; }
+        .info-label { color: var(--text-gray-1); }
+        .info-value { color: var(--blue-accent); cursor: pointer; text-decoration: none; font-weight: 500; }
+        .info-value.claimed { color: var(--status-green); font-weight: bold; }
 
+        /* الزر الرئيسي الأزرق */
         #confirm-btn {
-            background: var(--blue-btn); color: white; border: none; width: 100%;
-            padding: 16px; border-radius: 10px; font-size: 17px; font-weight: bold;
-            margin-top: 30px; cursor: pointer; transition: 0.3s;
+            background: #0088cc; color: white; border: none; width: 100%;
+            padding: 16px; border-radius: 12px; font-size: 17px; font-weight: bold;
+            margin-top: 30px; cursor: pointer; transition: 0.2s;
         }
         #confirm-btn:active { transform: scale(0.98); }
         
-        /* إخفاء زر التوصيل الافتراضي وجعله متناسقاً */
-        #connect-button { margin-top: 20px; display: flex; justify-content: center; }
+        /* تنسيق جدول Ownership History */
+        .ownership-history { margin-top: 40px; }
+        .history-title { font-size: 18px; font-weight: bold; color: white; margin-bottom: 15px; }
+        
+        /* تصميم الجدول مثل الصورة */
+        .history-item { display: grid; grid-template-columns: 2fr 3fr; padding: 14px 0; border-bottom: 1px solid #2d3e51; }
+        .history-label { color: var(--text-gray-1); font-size: 13px; margin-bottom: 4px; font-weight: 500; }
+        .history-value { color: white; font-size: 14px; font-weight: 500; }
+        .history-value.price { color: var(--status-green); font-weight: bold; font-size: 15px; }
+        .history-value.buyer { color: var(--blue-accent); cursor: pointer; font-size: 13px; }
+
+        /* إخفاء زر التوصيل الافتراضي */
+        #connect-button { display: none; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <div class="logo">
-                <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 2L2 19.77h20L12 2zm0 3.54l6.92 12.23H5.08L12 5.54z"/></svg>
+            <a href="#" class="logo">
+                <svg viewBox="0 0 24 24"><path d="M12 2L2 19.77h20L12 2zm0 3.54l6.92 12.23H5.08L12 5.54z"/></svg>
                 FRAGMENT
             </div>
+            <svg class="menu-icon" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
         </div>
 
-        <div class="main-title">
-            <span id="target-user">username</span>.t.me
+        <div class="title-section">
+            <span id="target-user">username</span><span class="t-me">.t.me</span>
             <span class="status-badge">Claimed</span>
         </div>
 
@@ -78,15 +103,42 @@
 
         <div class="info-row">
             <div class="info-label">Telegram Username</div>
-            <div class="info-value">@<span id="label-user">username</span></div>
+            <a href="#" class="info-value">@<span id="label-user">username</span></a>
         </div>
         <div class="info-row">
             <div class="info-label">Web Address</div>
-            <div class="info-value">t.me/<span id="label-user2">username</span></div>
+            <a href="#" class="info-value">t.me/<span id="label-user2">username</span></a>
+        </div>
+        <div class="info-row">
+            <div class="info-label">TON Web 3.0 Address</div>
+            <div class="info-value claims"><span id="label-user3">username</span>.t.me</div>
         </div>
 
-        <div id="connect-button"></div>
         <button id="confirm-btn">Accept the offer</button>
+        
+        <div id="connect-button"></div>
+        
+        <div class="ownership-history">
+            <div class="history-title">Ownership History</div>
+            
+            <div class="history-item">
+                <div class="col1">
+                    <div class="history-label">Sale price</div>
+                    <div class="history-value price">💎 6.0000...</div>
+                </div>
+                <div class="col2">
+                    <div class="history-label">Buyer</div>
+                    <div class="history-value buyer">UQBRnk7B...your_address_here</div>
+                </div>
+            </div>
+
+            <div class="history-item">
+                <div class="col1">
+                    <div class="history-label">Date</div>
+                    <div class="history-value">Mar 19 at 13:44</div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="main.js"></script>
