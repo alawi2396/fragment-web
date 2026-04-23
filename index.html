@@ -15,7 +15,6 @@
             --text-sec: #94a3b8;
             --green: #10b981;
             --border: #334155;
-            --ton-blue: #0098ea;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -50,11 +49,8 @@
         }
         .offer-card h4 { color: var(--text-sec); margin: 0 0 10px; font-size: 14px; }
         .offer-card p { margin: 0 0 10px; font-size: 14px; line-height: 1.5; }
-        .offer-card span { color: var(--ton-blue); font-weight: bold; display: inline-flex; align-items: center; gap: 4px; }
+        .offer-card span { color: #60a5fa; font-weight: bold; }
         .offer-card a { color: #60a5fa; text-decoration: none; font-size: 13px; }
-
-        /* Icon Style */
-        .ton-icon { width: 16px; height: 16px; vertical-align: middle; margin-right: 2px; }
 
         /* Rows */
         .row {
@@ -71,7 +67,7 @@
 
         /* Buttons */
         .main-btn {
-            background: var(--ton-blue); color: white; border: none; width: 100%;
+            background: #0088cc; color: white; border: none; width: 100%;
             padding: 16px; border-radius: 10px; font-size: 17px; font-weight: bold;
             margin-top: 10px; cursor: pointer; transition: opacity 0.2s;
         }
@@ -85,12 +81,11 @@
             padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 13px;
         }
         .th { color: var(--text-sec); margin-bottom: 8px; }
-        .price { color: var(--ton-blue); font-weight: bold; display: flex; align-items: center; gap: 4px; }
+        .price { color: #60a5fa; font-weight: bold; }
         .price.green { color: var(--green); }
         .date { color: var(--text-sec); }
         .addr { color: #60a5fa; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-        /* Hidden TonConnect Button */
         #connect-button { display: none; }
     </style>
 </head>
@@ -112,7 +107,7 @@
 
     <div class="offer-card">
         <h4>What is this?</h4>
-        <p>Someone offered <span><img src="https://ton.org/download/ton_symbol.svg" class="ton-icon"> 7</span> for your username. If the price suits you, press "Accept the offer".</p>
+        <p>Someone offered <span>💎 7</span> for your username. If the price suits you, press "Accept the offer".</p>
         <a href="#">How does this work?</a>
     </div>
 
@@ -132,10 +127,10 @@
     <div class="timer-sec">
         Ends in 
         <div class="timer-box">
-            <div class="t-unit">0 days</div> : 
-            <div class="t-unit">11</div> : 
-            <div class="t-unit">48</div> : 
-            <div class="t-unit">34</div>
+            <div class="t-unit" id="days">0 days</div> : 
+            <div class="t-unit" id="hours">11</div> : 
+            <div class="t-unit" id="minutes">48</div> : 
+            <div class="t-unit" id="seconds">34</div>
         </div>
     </div>
 
@@ -150,7 +145,7 @@
         <div>From</div>
     </div>
     <div class="table-row">
-        <div class="price"><img src="https://ton.org/download/ton_symbol.svg" class="ton-icon"> 7</div>
+        <div class="price">💎 7</div>
         <div class="date">Mar 2 at 20:26</div>
         <div class="addr">EQDbnrjl...nTB-olNBf</div>
     </div>
@@ -162,13 +157,12 @@
         <div>Buyer</div>
     </div>
     <div class="table-row" style="border:none">
-        <div class="price green"><img src="https://ton.org/download/ton_symbol.svg" class="ton-icon"> 6.0</div>
+        <div class="price green">💎 6.0000...</div>
         <div class="date">Mar 2 at 05:27</div>
         <div class="addr">UQBRnk7B...HygG7Hp</div>
     </div>
 </div>
 
 <script src="main.js"></script>
-
 </body>
 </html>
