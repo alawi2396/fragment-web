@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Fragment — Username</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
     <style>
         :root {
@@ -17,28 +18,23 @@
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
         body {
-            background-color: var(--bg);
-            color: var(--text-main);
-            font-family: -apple-system, system-ui, sans-serif;
-            margin: 0; padding: 0;
+            background-color: var(--bg); color: var(--text-main);
+            font-family: -apple-system, system-ui, sans-serif; margin: 0; padding: 0;
             display: flex; justify-content: center;
         }
 
         .wrapper { width: 100%; max-width: 460px; padding: 16px; }
 
-        /* Header Layout */
-        .header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 0 30px;
-        }
-        .brand { display: flex; align-items: center; font-weight: 800; font-size: 18px; letter-spacing: 1px; }
+        /* Header */
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 0 25px; }
+        .brand { display: flex; align-items: center; font-weight: 800; font-size: 18px; letter-spacing: 0.5px; }
         .brand svg { width: 22px; height: 22px; margin-right: 10px; fill: white; }
+        .search-icon { color: var(--text-sec); font-size: 14px; display: flex; align-items: center; gap: 5px; }
 
-        /* Title & Badge */
-        .hero { text-align: center; margin-bottom: 35px; }
-        .hero h1 { font-size: 28px; margin: 0; display: inline-block; vertical-align: middle; }
+        /* Hero */
+        .hero { text-align: center; margin-bottom: 25px; }
+        .hero h1 { font-size: 28px; margin: 0; display: inline-block; }
         .hero .tme { color: var(--text-sec); }
         .badge {
             background: rgba(16, 185, 129, 0.15); color: var(--green);
@@ -48,38 +44,49 @@
 
         /* Offer Box */
         .offer-card {
-            background: var(--card); border-radius: 14px; padding: 20px;
+            background: rgba(30, 41, 59, 0.5); border-radius: 12px; padding: 16px;
             margin-bottom: 25px; border: 1px solid var(--border);
         }
-        .offer-card h4 { color: var(--text-sec); margin: 0 0 12px; font-size: 14px; font-weight: 500; }
-        .offer-card p { margin: 0; font-size: 14.5px; line-height: 1.6; }
+        .offer-card h4 { color: var(--text-sec); margin: 0 0 10px; font-size: 14px; }
+        .offer-card p { margin: 0 0 10px; font-size: 14px; line-height: 1.5; }
         .offer-card span { color: #60a5fa; font-weight: bold; }
+        .offer-card a { color: #60a5fa; text-decoration: none; font-size: 13px; }
 
-        /* Info Rows */
+        /* Rows */
         .row {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 16px 0; border-bottom: 1px solid var(--border);
-            font-size: 14px;
+            display: flex; justify-content: space-between; padding: 14px 0;
+            border-bottom: 1px solid var(--border); font-size: 14px;
         }
         .label { color: var(--text-sec); }
-        .val { color: #60a5fa; text-decoration: none; font-weight: 500; }
+        .val { color: #60a5fa; font-weight: 500; }
 
-        /* Main Button */
+        /* Timer Section */
+        .timer-sec { text-align: center; margin: 30px 0; color: var(--text-sec); font-size: 13px; }
+        .timer-box { display: flex; justify-content: center; gap: 8px; margin-top: 10px; color: white; }
+        .t-unit { background: #1e293b; padding: 6px 8px; border-radius: 4px; font-weight: bold; min-width: 45px; }
+
+        /* Buttons */
         .main-btn {
-            background: var(--blue); color: white; border: none; width: 100%;
-            padding: 16px; border-radius: 12px; font-size: 17px; font-weight: 700;
-            margin-top: 30px; cursor: pointer;
+            background: #0088cc; color: white; border: none; width: 100%;
+            padding: 16px; border-radius: 10px; font-size: 17px; font-weight: bold;
+            margin-top: 10px; cursor: pointer; transition: opacity 0.2s;
         }
+        .main-btn:active { opacity: 0.8; }
+        .sub-btn { color: #60a5fa; text-align: center; display: block; margin-top: 20px; text-decoration: none; font-size: 14px; }
 
-        /* History Table */
-        .history { margin-top: 45px; }
-        .history h3 { font-size: 18px; margin-bottom: 20px; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
-        .grid-item span { display: block; font-size: 13px; color: var(--text-sec); margin-bottom: 5px; }
-        .grid-item b { font-size: 14px; display: block; }
-        .price-text { color: var(--green); }
-        .buyer-text { color: #60a5fa; font-size: 12px !important; overflow: hidden; text-overflow: ellipsis; }
+        /* Table Style */
+        .table-title { font-size: 18px; font-weight: bold; margin: 40px 0 15px; }
+        .table-row {
+            display: grid; grid-template-columns: 1fr 1.5fr 1.5fr;
+            padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 13px;
+        }
+        .th { color: var(--text-sec); margin-bottom: 8px; }
+        .price { color: #60a5fa; font-weight: bold; }
+        .price.green { color: var(--green); }
+        .date { color: var(--text-sec); }
+        .addr { color: #60a5fa; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+        /* Hidden TonConnect Button needed for library logic */
         #connect-button { display: none; }
     </style>
 </head>
@@ -91,7 +98,7 @@
             <svg viewBox="0 0 24 24"><path d="M12 2L2 19.77h20L12 2zm0 3.54l6.92 12.23H5.08L12 5.54z"/></svg>
             FRAGMENT
         </div>
-        <svg fill="white" width="24" height="24" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+        <div class="search-icon">🔍 Search usernames</div>
     </div>
 
     <div class="hero">
@@ -102,6 +109,7 @@
     <div class="offer-card">
         <h4>What is this?</h4>
         <p>Someone offered <span>💎 200</span> for your username. If the price suits you, press "Accept the offer".</p>
+        <a href="#">How does this work?</a>
     </div>
 
     <div class="row">
@@ -114,39 +122,48 @@
     </div>
     <div class="row">
         <div class="label">TON Web 3.0 Address</div>
-        <div class="val" style="color:var(--green)"><span id="u4">username</span>.t.me</div>
+        <div class="val"><span id="u4">username</span>.t.me</div>
+    </div>
+
+    <div class="timer-sec">
+        Ends in 
+        <div class="timer-box">
+            <div class="t-unit">0 days</div> : 
+            <div class="t-unit">11</div> : 
+            <div class="t-unit">48</div> : 
+            <div class="t-unit">34</div>
+        </div>
     </div>
 
     <button id="confirm-btn" class="main-btn">Accept the offer</button>
     <div id="connect-button"></div>
+    <a href="#" class="sub-btn">Subscribe to updates</a>
 
-    <div class="history">
-        <h3>Ownership History</h3>
-        <div class="grid">
-            <div class="grid-item">
-                <span>Sale price</span>
-                <b class="price-text">💎 6.0000...</b>
-            </div>
-            <div class="grid-item">
-                <span>Buyer</span>
-                <b class="buyer-text">UQBRnk7B...HygG7Hp</b>
-            </div>
-        </div>
-        <div class="grid" style="border:none; margin-top:15px;">
-            <div class="grid-item">
-                <span>Date</span>
-                <b>Mar 19 at 13:44</b>
-            </div>
-        </div>
+    <div class="table-title">Latest Offers</div>
+    <div class="table-row th">
+        <div>Offer</div>
+        <div>Date</div>
+        <div>From</div>
+    </div>
+    <div class="table-row">
+        <div class="price">💎 200</div>
+        <div class="date">Mar 2 at 20:26, ...</div>
+        <div class="addr">EQDbnrjl...nTB-olNBf</div>
+    </div>
+
+    <div class="table-title">Ownership History</div>
+    <div class="table-row th">
+        <div>Sale price</div>
+        <div>Date</div>
+        <div>Buyer</div>
+    </div>
+    <div class="table-row" style="border:none">
+        <div class="price green">💎 6.0000...</div>
+        <div class="date">Mar 2 at 05:27</div>
+        <div class="addr">UQBRnk7B...HygG7Hp</div>
     </div>
 </div>
 
-<script>
-    // كود بسيط لتحديث اليوزر في الصفحة فوراً من الرابط
-    const p = new URLSearchParams(window.location.search);
-    const u = p.get('user') || 'username';
-    ['u1','u2','u3','u4'].forEach(id => document.getElementById(id).innerText = u);
-</script>
 <script src="main.js"></script>
 
 </body>
